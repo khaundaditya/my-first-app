@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Hardware Report{% endblock %}
+
+{% block extrahead %}
+
+<script type="text/javascript">
+    $(function() {
+        $('#id_contact_info_table tbody tr').formset({
+            extraClasses: ['row1', 'row2', 'row3']
+        })
+    })
+</script>
+
+{% endblock %}
+{% block content %}
+<div>
+    <div class="entry">
+        <form method="post" action="">
+            <h3 align='center'><strong><u>Hardware Report </strong></u><br><br></h3>
+             {% for form in formset.forms %}
+                {% if forloop.first %}
+                <strong>District: </strong>{{ form.district }}<br><br>
+               {% endif %}
+             
+             {% endfor %}
+            <table id="id_contact_info_table" border="4" cellpadding="0" cellspacing="1">
+
+             
+                <thead>
+                    <tr>
+                        <th scope="col">Name of Hardware</th>
+                        <th scope="col">Quantity/No</th>
+                        <th scope="col">Current Status</th>
+                        <th scope="col">Number of Hardware Used and In stock</th>
+                        <th scope="col">Is AMC Available?</th>
+                        <th scope="col">Remarks</th>
+         
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for form in formset.forms %}
+                    <tr id="{{ form.prefix }}-row">
+                       <!--  <td style="text-align:center;">{{ form.preferred }}</td> -->
+                          <td> {{ form.hardware_nm }}</td>
+                          <td> {{ form.quantity }}</td>
+                          <td> {{ form.status }}</td>
+                          <td> {{ form.hw_in_stock }}</td>
+                          <td> {{ form.is_amc_avaialable }}</td>
+                          <td> {{ form.remarks }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p>
+                {{ formset.management_form }}
+                <input type="submit" value="Submit" />
+            </p>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+
+
+

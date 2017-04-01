@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}NOFN Report{% endblock %}
+
+{% block extrahead %}
+
+<script type="text/javascript">
+    $(function() {
+        $('#id_contact_info_table tbody tr').formset({
+            extraClasses: ['row1', 'row2', 'row3']
+        })
+    })
+</script>
+
+{% endblock %}
+{% block content %}
+<div>
+    <div class="entry">
+        <form method="post" action="">
+        <h3 align='center'><strong><u>NOFN Report </strong></u><br><br></h3>
+         {% for form in formset.forms %}
+                {% if forloop.first %}
+                <strong>District: </strong>{{ form.district }}<br><br>
+               {% endif %}
+             
+             {% endfor %}
+            <table id="id_contact_info_table" border="4" cellpadding="0" cellspacing="1">
+                <thead>
+                    <tr>
+                        <th scope="col">Name of GP</th>
+                        <th scope="col">Block Name</th>
+                        <th scope="col">Whether Fiber layed upto GP</th>
+                        <th scope="col">GPON aggregration equipment installed at Block?</th>
+                        <th scope="col">Is GPON termination done at GP?</th>
+                        <th scope="col">NOFN PoP is Build at</th>
+                        <th scope="col">Access to Network Facility extendible upto village?</th>
+                        <th scope="col">Remarks</th>
+         
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for form in formset.forms %}
+                    <tr id="{{ form.prefix }}-row">
+                       <!--  <td style="text-align:center;">{{ form.preferred }}</td> -->
+                        <td >{{ form.gp_name }}</td>
+                        <td>{{ form.block_name }}</td>
+
+                        <td> {{ form.is_fibre_layered_upto_gp }}</td>
+                        <td> {{ form.is_gpon_installed_at_block }}</td>
+                        <td> {{ form.is_gpon_termination_done_at_GP }}</td>
+                        <td> {{ form.nofn_pop_build_at }}</td>
+                        <td> {{ form.is_network_access_available_at_village }}</td>
+                        <td> {{ form.remarks }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p>
+                {{ formset.management_form }}
+                <input type="submit" value="Submit" />
+            </p>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}SWAN Report{% endblock %}
+
+{% block extrahead %}
+
+<script type="text/javascript">
+    $(function() {
+        $('#id_contact_info_table tbody tr').formset({
+            extraClasses: ['row1', 'row2', 'row3']
+        })
+    })
+</script>
+
+{% endblock %}
+{% block content %}
+<div>
+    <div class="entry">
+        <form method="post" action="">{% csrf_token %}
+        <h3 align='center'><strong><u>SWAN Report </strong></u><br><br></h3>
+      {% for form in formset.forms %}
+                {% if forloop.first %}
+                <strong>District: </strong>{{ form.district }}<br><br>
+               {% endif %}
+             
+             {% endfor %}
+            <table id="id_contact_info_table" border="4" cellpadding="0" cellspacing="1">
+                <thead>
+                    <tr>
+                        <th scope="col">Name of POPs</th>
+                        <th scope="col">Distance from HQ</th>
+                        <th scope="col">Name of offices Connected</th>
+                        <th scope="col">Distance of Office from POP</th>
+                        <th scope="col">Type of Horizontal Connectivity</th>
+                        <th scope="col">Bandwidth</th>
+                        <th scope="col">Is Functional?</th>
+                        <th scope="col">When it was last up?</th>
+                        <th scope="col">Manpower(s) Responsible</th>
+                        <th scope="col">Reason(s) of not working</th>
+                        <th scope="col">Remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for form in formset.forms %}
+                    <tr id="{{ form.prefix }}-row">
+                       <!--  <td style="text-align:center;">{{ form.preferred }}</td> -->
+                        <td >{{ form.pop_names }}</td>
+                        <td>{{ form.distance_from_hq }}</td>
+
+                        <td> {{ form.offices_connected_with_pop }}</td>
+                        <td> {{ form.distance_from_pop }}</td>
+                        <td> {{ form.connectivity_types }}</td>
+                        <td> {{ form.internet_bandwidth }}</td>
+                        <td> {{ form.is_functional }}</td>
+                        <td> {{ form.when_last_up }}</td>
+                         <td> {{ form.pop_manpower }}</td>
+                        <td> {{ form.reasons_for_not_working }}</td>
+                        <td> {{ form.remarks }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p>
+                {{ formset.management_form }}
+                <input type="submit" value="Submit" />
+            </p>
+        </form>
+    </div>
+</div>
+{% endblock %}

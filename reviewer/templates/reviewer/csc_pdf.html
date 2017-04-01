@@ -1,0 +1,94 @@
+ <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+ <html>
+     <head>
+         <title>Title</title>
+         <style type="text/css">
+             body {
+                 font-weight: 200;
+                 font-size: 14px;
+             }
+             .header {
+                 font-size: 20px;
+                 font-weight: 100;
+                 text-align: center;
+                 color: #007cae;
+             }
+             .title {
+                 font-size: 22px;
+                 font-weight: 100;
+                /* text-align: right;*/
+                padding: 10px 20px 0px 20px;  
+             }
+             .title span {
+                 color: #007cae;
+             }
+             .details {
+                 padding: 10px 20px 0px 20px;
+                 text-align: left !important;
+                 /*margin-left: 40%;*/
+             }
+             .hrItem {
+                 border: none;
+                 height: 1px;
+                 /* Set the hr color */
+                 color: #333; /* old IE */
+                 background-color: #fff; /* Modern Browsers */
+             }
+             .table,th,td,tr {
+                border: 1px solid black;
+                background-color:#FCF0FB;
+                text-align: center;
+                padding-top: 3px;
+                font-size: 16px;
+              }
+         </style>
+     </head>
+     <body>
+         <div class='wrapper'>
+             <div class='header'>
+                 <p class='title'>{{report_name}} Report</p>
+             </div>
+         <div>
+         <div class='details'>
+           
+                <h3> District: <strong>{{ district }}</strong> </h3>
+                <h3> Report Month: <strong>{{ report_month }}</strong> </h3>
+               
+              <table class="table">
+              <thead>
+                    <th scope="col">OMT ID</th>
+                        <th scope="col">Name of VLE/CSC </th>
+                        <th scope="col">Name of Gaon Panchayat</th>
+                        <th scope="col">Address of Gaon Panchayat</th>
+                        <th scope="col">VLE Mobile Num</th>
+                        <th scope="col">IT Infrastructure Details</th>
+                        <th scope="col">Connectivty Mode</th>
+                        <th scope="col">Number of G2C and G2G Services</th>
+                        <th scope="col">Number of G2B and Other Services</th>
+                        <th scope="col">Remarks</th>
+                </thead>
+        
+
+                {% for item in filtered_result %}
+                <tr>
+                    <td >{{ item.omt_id }}</td>
+                    <td>{{ item.vle_name }}</td>
+
+                    <td> {{ item.gaon_panchayat_name }}</td>
+                    <td> {{ item.address }}</td>
+                    <td> {{ item.mobile_number }}</td>
+                    <td> {{ item.infra_details }}</td>
+
+                    <td> {{ item.connectivity_modes }}</td>
+                    <td> {{ item.num_g2c_and_g2g_services }}</td>
+                    <td> {{ item.num_g2b_and_other_services }}</td>
+                    <td> {{ item.remarks }}</td>
+                </tr>
+            
+                {% endfor %}
+ 
+            </table> 
+         </div>
+     </div> 
+     </body>
+ </html>

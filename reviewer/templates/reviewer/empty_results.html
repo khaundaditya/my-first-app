@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+<html>
+<h1 align=center> <strong>{{ report_name }} Report </strong></h1>
+<body>
+<h2> District: <strong>{{ district }}</strong> </h3>
+ <h2> Report Month: <strong>{{ YYYYMM }}</strong> </h3>
+<h2><strong>{{ null_string}}</strong></h2>
+
+</body>
+</html>
+{% endblock %}

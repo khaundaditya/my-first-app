@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}SWAN Report{% endblock %}
+
+{% block extrahead %}
+
+<script type="text/javascript">
+    $(function() {
+        $('#id_contact_info_table tbody tr').formset({
+            extraClasses: ['row1', 'row2', 'row3']
+        })
+    })
+</script>
+
+{% endblock %}
+{% block content %}
+<div>
+    <div class="entry">
+        <form method="post" action="">
+         <h3 align='center'><strong><u>Digital Literacy Report </strong></u><br><br></h3>
+         {% for form in formset.forms %}
+                {% if forloop.first %}
+                <strong>District: </strong>{{ form.district }}<br><br>
+               {% endif %}
+             
+             {% endfor %}
+            <table id="id_contact_info_table" border="4" cellpadding="0" cellspacing="1">
+                <thead>
+                    <tr>
+                        <th scope="col">Name of LAC</th>
+                        <th scope="col">Number of Training Centres</th>
+                        <th scope="col">No. of Examination Centres near to GP</th>
+                        <th scope="col">Number of beneficiaries Registered</th>
+                        <th scope="col">Number of beneficiaries under training</th>
+                        <th scope="col">Number of beneficiaries trained</th>
+                        <th scope="col">Number of beneficiaries appeared in examination</th>
+                        <th scope="col">Number of beneficiaries passed in examination</th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for form in formset.forms %}
+                    <tr id="{{ form.prefix }}-row">
+                       <!--  <td style="text-align:center;">{{ form.preferred }}</td> -->
+                        <td >{{ form.lac_name }}</td>
+                        <td>{{ form.num_training_centres }}</td>
+
+                        <td> {{ form.num_examination_centres_near_gp }}</td>
+                        <td> {{ form.num_beneficiaries_registered }}</td>
+                        <td> {{ form.num_beneficiaries_under_training }}</td>
+                        <td> {{ form.num_beneficiaries_trained }}</td>
+                        <td> {{ form.num_beneficiaries_appeared_in_exam }}</td>
+                        <td> {{ form.num_beneficiaries_passed_in_exam }}</td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p>
+                {{ formset.management_form }}
+                <input type="submit" value="Submit" />
+            </p>
+        </form>
+    </div>
+</div>
+{% endblock %}

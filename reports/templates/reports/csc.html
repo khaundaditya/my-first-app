@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}CSC Report{% endblock %}
+
+{% block extrahead %}
+
+<script type="text/javascript">
+    $(function() {
+        $('#id_contact_info_table tbody tr').formset({
+            extraClasses: ['row1', 'row2', 'row3']
+        })
+    })
+</script>
+
+{% endblock %}
+
+{% block content %}
+<div>
+    <div class="entry">
+        <form method="post" action="">{% csrf_token %}
+        <h3 align='center'><strong><u>CSC Report </strong></u><br><br></h3>
+        {% if messages %}
+<ul class="messages">
+{% for message in messages %}
+<li class="{{ message.tags }}">
+{{ message|safe }}
+<a href="#" class="close"></a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+         {% for form in formset.forms %}
+                {% if forloop.first %}
+                <strong>District: </strong>{{ form.district }}<br><br>
+               {% endif %}
+             
+             {% endfor %}
+            <table id="id_contact_info_table" border="2" cellpadding="0" cellspacing="1">
+                <thead>
+                    <tr>
+                        <th scope="col">OMT ID</th>
+                        <th scope="col">Name of VLE/CSC </th>
+                        <th scope="col">Name of Gaon Panchayat</th>
+                        <th scope="col">Address of Gaon Panchayat</th>
+                        <th scope="col">VLE Mobile Num</th>
+                        <th scope="col">IT Infrastructure Details</th>
+                        <th scope="col">Connectivty Mode</th>
+                        <th scope="col">Number of G2C and G2G Services</th>
+                        <th scope="col">Number of G2B and Other Services</th>
+                        <th scope="col">Remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for form in formset.forms %}
+                    <tr id="{{ form.prefix }}-row">
+                       <!--  <td style="text-align:center;">{{ form.preferred }}</td> -->
+                        <td >{{ form.omt_id }}</td>
+                        <td>{{ form.vle_name }}</td>
+
+                        <td> {{ form.gaon_panchayat_name }}</td>
+                        <td> {{ form.address }}</td>
+                        <td> {{ form.mobile_number }}</td>
+                        <td> {{ form.infra_details }}</td>
+
+                        <td> {{ form.connectivity_modes }}</td>
+                        <td> {{ form.num_g2c_and_g2g_services }}</td>
+                        <td> {{ form.num_g2b_and_other_services }}</td>
+                        <td> {{ form.remarks }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p>
+                {{ formset.management_form }}
+                <input type="submit" value="Submit" />
+            </p>
+        </form>
+    </div>
+</div>
+{% endblock %}

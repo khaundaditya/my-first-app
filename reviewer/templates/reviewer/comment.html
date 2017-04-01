@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}New comment{% endblock %}
+
+{% block content %}
+	{% if new_comment %}
+    <h1>New comment for {{report_name}} report submitted by {{user}}</h1>
+    {% endif %}
+    {% if response_to_comment %}
+    <h1>Response to comment by {{user}} </h1>
+    {% endif %}
+    <form action="." method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="hidden" name="report_name" value="{{report_name}}">
+        <input type="hidden" name="today" value="{{today}}">
+         <input type="hidden" name="district" value="{{district}}">
+         
+        <input type="submit" value="Add comment">
+    </form>
+{% endblock %}

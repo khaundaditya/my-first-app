@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Comments{% endblock %}
+
+{% block content %}
+<html>
+<h2 align=center> <strong>Comments raised by Reviewer</strong></h2>
+<body>
+
+{% if messages %}
+<ul class="messages">
+{% for message in messages %}
+<li class="{{ message.tags }}">
+{{ message|safe }}
+<a href="#" class="close"></a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+<table border=2 >{% csrf_token %}
+    <tr>
+        <th>Comment  History</th>
+        <th>Snapshot of report Submiited</th>
+        <th>Post Reply</th>
+        <th>Last Updated</th>
+    </tr>
+    {% for item in filtered_result %}
+    <tr> 
+        <td>{{ item.body }}</td>
+        <td><a target="_blank" class="btn btn-info pull-right" href="{% url 'reviewer:populate_snapshot' %}?id={{item.post_id}}">Check Snapshot</a></td>
+        <td><a target="_blank"  href="{% url 'reviewer:reviewer_comment' %}?id={{item.post_id}}">Reply</a></td>
+        <td>{{ item.updated }}</td>
+
+    </tr>
+    {% endfor %}
+</table>
+
+</html>
+{% endblock %}

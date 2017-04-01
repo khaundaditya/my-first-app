@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+<html>
+<h2 align=center> <strong>{{ report_name }} Report </strong></h2>
+<body>
+ {% if include_href %}
+<a target="_blank" href="{% url 'reviewer:generate_pdf' %}?period={{YYYYMM}}&district={{district}}&report={{report_name}}">Export PDF</a>
+{% endif %}
+{% if messages %}
+<ul class="messages">
+{% for message in messages %}
+<li class="{{ message.tags }}">
+{{ message|safe }}
+<a href="#" class="close"></a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+<table border=2>
+{% if csrf %}
+{% csrf_token %}
+{% endif %}
+	<h3> District: <strong>{{ district_full_name }}</strong> </h3>
+	<h3> Report Month: <strong>{{ YYYYMM }}</strong> </h3>
+    <tr>
+        <th>Person Name</th>
+        <th>Designation</th>
+        <th>Organization</th>
+        <th>Work Location</th>
+        <th>Mobile Number</th>
+        <th>Email Id</th>
+    </tr>
+    {% for item in filtered_result %}
+    <tr> 
+        <td>{{ item.person_name }}</td>
+        <td>{{ item.designation }}</td>
+        <td>{{ item.organization }}</td>
+        <td>{{ item.work_location }}</td>
+        <td>{{ item.mobile_number }}</td>
+        <td>{{ item.email_id}}</td>
+    </tr>
+    {% endfor %}
+</table>
+ <form method="post" action="">
+ {% if include_href %}
+ <a target="_blank" href="{% url 'reviewer:reviewer_comment' %}?report={{report_name}}&today={{YYYYMM}}&district={{district}}">
+ Comment</a> 
+ {% endif %}
+</form>
+</body>
+</html>
+{% endblock %}

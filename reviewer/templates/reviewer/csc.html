@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+<html>
+<h2 align=center> <strong>{{ report_name }} Report </strong></h2>
+<body>
+<a href="{% url 'reviewer:generate_pdf' %}?period={{YYYYMM}}&district={{district}}&report={{report_name}}">Export PDF</a>
+{% if messages %}
+<ul class="messages">
+{% for message in messages %}
+<li class="{{ message.tags }}">
+{{ message|safe }}
+<a href="#" class="close"></a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+<table border=2>{% csrf_token %}
+	<h3> District: <strong>{{ district }}</strong> </h3>
+	<h3> Report Month: <strong>{{ YYYYMM }}</strong> </h3>
+    <thead>
+        
+                        <th scope="col">OMT ID</th>
+                        <th scope="col">Name of VLE/CSC </th>
+                        <th scope="col">Name of Gaon Panchayat</th>
+                        <th scope="col">Address of Gaon Panchayat</th>
+                        <th scope="col">VLE Mobile Num</th>
+                        <th scope="col">IT Infrastructure Details</th>
+                        <th scope="col">Connectivty Mode</th>
+                        <th scope="col">Number of G2C and G2G Services</th>
+                        <th scope="col">Number of G2B and Other Services</th>
+                        <th scope="col">Remarks</th>
+                    
+    </thead>
+        {% for item in filtered_result %}
+        <tr>
+            <td >{{ item.omt_id }}</td>
+            <td>{{ item.vle_name }}</td>
+
+            <td> {{ item.gaon_panchayat_name }}</td>
+            <td> {{ item.address }}</td>
+            <td> {{ item.mobile_number }}</td>
+            <td> {{ item.infra_details }}</td>
+
+            <td> {{ item.connectivity_modes }}</td>
+            <td> {{ item.num_g2c_and_g2g_services }}</td>
+            <td> {{ item.num_g2b_and_other_services }}</td>
+            <td> {{ item.remarks }}</td>
+        </tr>
+            
+        {% endfor %}
+</table>
+ <form method="post" action="">
+<a href="{% url 'reviewer:reviewer_comment' %}?report={{report_name}}&today={{today_date}}">Comment</a>
+</form>
+</body>
+</html>
+{% endblock %}

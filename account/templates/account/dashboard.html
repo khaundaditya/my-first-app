@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Dashboard</h1>
+<p>Welcome to your dashboard.</p>
+<p>Please check the comments associated with you<p>
+<a target="_blank" href="{% url 'reviewer:populate_comment' %}?status={{status}}&user={{user}}&group={{group}}">Comments</a>
+<div class="entry">
+
+        {% if group == "Applicant" %}
+
+        	Submit New Reports
+        	<p>
+	        <ul>
+	            <li><a href="{% url 'reports:manpower' %}">Manpower Report</a></li>
+	          	<li><a href="{% url 'reports:csc' %}">CSC Report</a></li>
+	            
+	        </ul>
+	     {% endif %}
+	     {% if group == "Reviewer" %}
+	        <ul>
+	            <li><a href="{% url 'reviewer:generate_report' %}">Generate Report</a></li>
+	            
+	        </ul>
+	     {% endif %}
+    </div>
+{% endblock %}

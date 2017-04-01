@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Software Report{% endblock %}
+
+{% block extrahead %}
+
+<script type="text/javascript">
+    $(function() {
+        $('#id_contact_info_table tbody tr').formset({
+            extraClasses: ['row1', 'row2', 'row3']
+        })
+    })
+</script>
+
+{% endblock %}
+{% block content %}
+<div>
+    <div class="entry">
+        <form method="post" action="">
+         <h3 align='center'><strong><u>Software Report </strong></u><br><br></h3>
+         {% for form in formset.forms %}
+                {% if forloop.first %}
+                <strong>District: </strong>{{ form.district }}<br><br>
+               {% endif %}
+             
+             {% endfor %}
+            <table id="id_contact_info_table" border="4" cellpadding="0" cellspacing="1">
+                <thead>
+                    <tr>
+                        <th scope="col">Name of the application</th>
+                        <th scope="col">Application Owner</th>
+                        <th scope="col">Appication Objective</th>
+                        <th scope="col">Stakeholder Details</th>
+                        <th scope="col">Date of Installation/Commisioing</th>
+                        <th scope="col">Name of Application Developer</th>
+                        <th scope="col">Application Platform</th>
+                        <th scope="col">Future Roadmap</th>
+                        <th scope="col">Support Requirement</th>
+         
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for form in formset.forms %}
+                    <tr id="{{ form.prefix }}-row">
+                       <!--  <td style="text-align:center;">{{ form.preferred }}</td> -->
+                        <td>{{ form.appl_nm }}</td>
+
+                        <td> {{ form.appl_owner }}</td>
+                        <td> {{ form.appl_objective }}</td>
+                        <td> {{ form.stakeholder_details }}</td>
+                        <td> {{ form.date_of_commisioning }}</td>
+                        <td> {{ form.name_of_application_developer }}</td>
+                        <td> {{ form.appl_platform_details }}</td>
+                        <td> {{ form.future_roadmap }}</td>
+                        <td> {{ form.support_requirements }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p>
+                {{ formset.management_form }}
+                <input type="submit" value="Submit" />
+            </p>
+        </form>
+    </div>
+</div>
+{% endblock %}
