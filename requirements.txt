@@ -1,6 +1,7 @@
 Django==1.8
 django-ajax-selects==1.4.0
 dj-database-url==0.3.0
+python-decouple==3
 dj-static==0.0.6
 gunicorn==19.6.0
 django-messages==0.5.3
@@ -13,3 +14,4 @@ xhtml2pdf==0.0.6
 xlrd==1.0.0
 zope.interface==4.1.2
 whitenoise==3.2
+python-decouple==3
