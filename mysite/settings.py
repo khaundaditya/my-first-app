@@ -21,10 +21,13 @@ PROJECT_DIR = os.path.normpath(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '*4^hyb59n=nuz9*4=qg(7jcioe4+%2(4$5b+3wlmb0l@3wxrnd'
+#SECRET_KEY = '*4^hyb59n=nuz9*4=qg(7jcioe4+%2(4$5b+3wlmb0l@3wxrnd'
+#
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 ALLOWED_HOSTS = []
 ADMINS = (
@@ -33,7 +36,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 # Application definition
-
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 INSTALLED_APPS = (
    
     
@@ -108,14 +111,18 @@ DATABASES = {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     # }
-    'default': {
-      'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('DATABASE_NAME', ''),
-        'USER': os.environ.get('DATABASE_USER', ''),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD', ''),
-        'HOST': os.environ.get('DATABASE_HOST', ''),
-        'PORT': os.environ.get('DATABASE_PORT', ''),
-    }
+    # 'default': {
+    #   'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': os.environ.get('DATABASE_NAME', ''),
+    #     'USER': os.environ.get('DATABASE_USER', ''),
+    #     'PASSWORD': os.environ.get('DATABASE_PASSWORD', ''),
+    #     'HOST': os.environ.get('DATABASE_HOST', ''),
+    #     'PORT': os.environ.get('DATABASE_PORT', ''),
+    # }
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
+
 }
 
 
