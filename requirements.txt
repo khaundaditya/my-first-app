@@ -11,6 +11,5 @@ djangotoolbox==1.8.0
 psycopg2==2.6.2
 xhtml2pdf==0.0.6
 xlrd==1.0.0
-zinnia-python==0.0.0
 zope.interface==4.1.2
 whitenoise==3.2
