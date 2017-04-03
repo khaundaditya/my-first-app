@@ -11,6 +11,7 @@ django-taggit==0.17.1
 djangotoolbox==1.8.0
 psycopg2==2.6.2
 xhtml2pdf==0.0.6
+html5lib==1.0b8
 xlrd==1.0.0
 zope.interface==4.1.2
 whitenoise==3.2
