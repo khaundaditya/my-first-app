@@ -56,23 +56,33 @@
 
               <table class="table">
               <thead>
-                    <th>Person Name</th>
-                    <th>Designation</th>
-                    <th>Organization</th>
-                    <th>Work Location</th>
-                    <th>Mobile Number</th>
-                    <th>Email Id</th>
+                     <th scope="col">Name of POPs</th>
+                        <th scope="col">Distance from HQ</th>
+                        <th scope="col">Name of offices Connected</th>
+                        <th scope="col">Distance of Office from POP</th>
+                        <th scope="col">Type of Horizontal Connectivity</th>
+                        <th scope="col">Bandwidth</th>
+                        <th scope="col">Is Functional?</th>
+                        <th scope="col">When it was last up?</th>
+                        <th scope="col">Manpower(s) Responsible</th>
+                        <th scope="col">Reason(s) of not working</th>
+                        <th scope="col">Remarks</th>
                 </thead>
         
 
                 {% for item in filtered_result %}
                 <tr> 
-                    <td>{{ item.person_name }}</td>
-                    <td>{{ item.designation }}</td>
-                    <td>{{ item.organization }}</td>
-                    <td>{{ item.work_location }}</td>
-                    <td>{{ item.mobile_number }}</td>
-                    <td>{{ item.email_id}}</td>
+                         <td>{{ item.distance_from_hq }}</td>
+
+                        <td> {{ item.offices_connected_with_pop }}</td>
+                        <td> {{ item.distance_from_pop }}</td>
+                        <td> {{ item.connectivity_types }}</td>
+                        <td> {{ item.internet_bandwidth }}</td>
+                        <td> {{ item.is_functional }}</td>
+                        <td> {{ item.when_last_up }}</td>
+                         <td> {{ item.pop_manpower }}</td>
+                        <td> {{ item.reasons_for_not_working }}</td>
+                        <td> {{ item.remarks }}</td>
                 </tr>
                 {% endfor %}
  

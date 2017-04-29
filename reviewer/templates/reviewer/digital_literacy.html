@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% if override %}
+    {% block inheritable %}
+    {% endblock %}
+{% endif %}
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+<html>
+<h2 align=center> <strong>{{ report_name }} Report </strong></h2>
+<body>
+ {% if include_href %}
+<a target="_blank" href="{% url 'reviewer:generate_pdf' %}?period={{YYYYMM}}&district={{district}}&report={{report_name}}">Export PDF</a>
+{% endif %}
+{% if messages %}
+<ul class="messages">
+{% for message in messages %}
+<li class="{{ message.tags }}">
+{{ message|safe }}
+<a href="#" class="close"></a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+<table border=2>
+{% if csrf %}
+{% csrf_token %}
+{% endif %}
+	<h3> District: <strong>{{ district_full_name }}</strong> </h3>
+	<h3> Report Month: <strong>{{ YYYYMM }}</strong> </h3>
+    <tr>
+                        <th scope="col">Name of LAC</th>
+                        <th scope="col">Number of Training Centres</th>
+                        <th scope="col">No. of Examination Centres near to GP</th>
+                        <th scope="col">Number of beneficiaries Registered</th>
+                        <th scope="col">Number of beneficiaries under training</th>
+                        <th scope="col">Number of beneficiaries trained</th>
+                        <th scope="col">Number of beneficiaries appeared in examination</th>
+                        <th scope="col">Number of beneficiaries passed in examination</th>
+    </tr>
+    {% for item in filtered_result %}
+    <tr> 
+                        <td >{{ item.lac_name }}</td>
+                        <td>{{ item.num_training_centres }}</td>
+
+                        <td> {{ item.num_examination_centres_near_gp }}</td>
+                        <td> {{ item.num_beneficiaries_registered }}</td>
+                        <td> {{ item.num_beneficiaries_under_training }}</td>
+                        <td> {{ item.num_beneficiaries_trained }}</td>
+                        <td> {{ item.num_beneficiaries_appeared_in_exam }}</td>
+                        <td> {{ item.num_beneficiaries_passed_in_exam }}</td>
+    </tr>
+    {% endfor %}
+</table>
+ <form method="post" action="">
+ {% if include_href %}
+ <a target="_blank" href="{% url 'reviewer:reviewer_comment' %}?report={{report_name}}&today={{YYYYMM}}&district={{district}}">
+ Comment</a> 
+ {% endif %}
+</form>
+</body>
+</html>
+{% endblock %}

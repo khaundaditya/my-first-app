@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% if override %}
+    {% block inheritable %}
+    {% endblock %}
+{% endif %}
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+<html>
+<h2 align=center> <strong>{{ report_name }} Report </strong></h2>
+<body>
+ {% if include_href %}
+<a target="_blank" href="{% url 'reviewer:generate_pdf' %}?period={{YYYYMM}}&district={{district}}&report={{report_name}}">Export PDF</a>
+{% endif %}
+{% if messages %}
+<ul class="messages">
+{% for message in messages %}
+<li class="{{ message.tags }}">
+{{ message|safe }}
+<a href="#" class="close"></a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+<table border=2>
+{% if csrf %}
+{% csrf_token %}
+{% endif %}
+	<h3> District: <strong>{{ district_full_name }}</strong> </h3>
+	<h3> Report Month: <strong>{{ YYYYMM }}</strong> </h3>
+    <tr>
+        <th scope="col">Service Name</th>
+                        <th scope="col">Department/Branch</th>
+                        <th scope="col">Delivery Channel</th>
+                        <th scope="col">Name of Online Application</th>
+                        <th scope="col">Digital Signature</th>
+                        <th scope="col">Is Work Flow Computerized?</th>
+                        <th scope="col">Language</th>
+                        <th scope="col">Is Legacy Data Digitized</th>
+                        <th scope="col">If Yes,From When</th>
+                        <th scope="col">Where is digitized data stored?</th>
+                        <th scope="col">Remarks</th>
+    </tr>
+    {% for item in filtered_result %}
+    <tr> 
+        <<td >{{ item.service_nm }}</td>
+                        <td>{{ item.associated_line_department }}</td>
+                        <td> {{ item.delivery_channel }}</td>
+                        <td> {{ item.name_of_application }}</td>
+                        <td> {{ item.is_digitally_signed }}</td>
+                        <td> {{ item.is_computerized }}</td>
+                        <td> {{ item.language_of_submission }}</td>
+                        <td> {{ item.is_legacy_data_digitized }}</td>
+                        <td> {{ item.from_when }}</td>
+                        <td> {{ item.mode_of_storage }}</td>
+                        <td> {{ item.remarks }}</td>
+ 
+    </tr>
+    {% endfor %}
+</table>
+ <form method="post" action="">
+ {% if include_href %}
+ <a target="_blank" href="{% url 'reviewer:reviewer_comment' %}?report={{report_name}}&today={{YYYYMM}}&district={{district}}">
+ Comment</a> 
+ {% endif %}
+</form>
+</body>
+</html>
+{% endblock %}

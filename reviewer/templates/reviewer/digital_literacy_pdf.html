@@ -56,24 +56,27 @@
 
               <table class="table">
               <thead>
-                    <th>Person Name</th>
-                    <th>Designation</th>
-                    <th>Organization</th>
-                    <th>Work Location</th>
-                    <th>Mobile Number</th>
-                    <th>Email Id</th>
-                </thead>
+                        <th scope="col">Name of LAC</th>
+                        <th scope="col">Number of Training Centres</th>
+                        <th scope="col">No. of Examination Centres near to GP</th>
+                        <th scope="col">Number of beneficiaries Registered</th>
+                        <th scope="col">Number of beneficiaries under training</th>
+                        <th scope="col">Number of beneficiaries trained</th>
+                        <th scope="col">Number of beneficiaries appeared in examination</th>
+                        <th scope="col">Number of beneficiaries passed in examination</th>
         
 
                 {% for item in filtered_result %}
                 <tr> 
-                    <td>{{ item.person_name }}</td>
-                    <td>{{ item.designation }}</td>
-                    <td>{{ item.organization }}</td>
-                    <td>{{ item.work_location }}</td>
-                    <td>{{ item.mobile_number }}</td>
-                    <td>{{ item.email_id}}</td>
-                </tr>
+                        <td >{{ item.lac_name }}</td>
+                        <td>{{ item.num_training_centres }}</td>
+
+                        <td> {{ item.num_examination_centres_near_gp }}</td>
+                        <td> {{ item.num_beneficiaries_registered }}</td>
+                        <td> {{ item.num_beneficiaries_under_training }}</td>
+                        <td> {{ item.num_beneficiaries_trained }}</td>
+                        <td> {{ item.num_beneficiaries_appeared_in_exam }}</td>
+                        <td> {{ item.num_beneficiaries_passed_in_exam }}</td>
                 {% endfor %}
  
             </table> 

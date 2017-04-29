@@ -1,5 +1,8 @@
 {% extends "base.html" %}
-
+{% if override %}
+    {% block inheritable %}
+    {% endblock %}
+{% endif %}
 {% block title %}Reports{% endblock %}
 
 {% block content %}
@@ -17,7 +20,10 @@
 {% endfor %}
 </ul>
 {% endif %}
-<table border=2>{% csrf_token %}
+<table border=2>
+{% if csrf %}
+{% csrf_token %}
+{% endif %}
 	<h3> District: <strong>{{ district }}</strong> </h3>
 	<h3> Report Month: <strong>{{ YYYYMM }}</strong> </h3>
     <thead>
@@ -53,7 +59,7 @@
         {% endfor %}
 </table>
  <form method="post" action="">
-<a href="{% url 'reviewer:reviewer_comment' %}?report={{report_name}}&today={{today_date}}">Comment</a>
+<a href="{% url 'reviewer:reviewer_comment' %}?report={{report_name}}&today={{YYYYMM}}&district={{district}}">Comment</a>
 </form>
 </body>
 </html>

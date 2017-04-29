@@ -56,23 +56,21 @@
 
               <table class="table">
               <thead>
-                    <th>Person Name</th>
-                    <th>Designation</th>
-                    <th>Organization</th>
-                    <th>Work Location</th>
-                    <th>Mobile Number</th>
-                    <th>Email Id</th>
+                        <th scope="col">Service Name</th>
+                        <th scope="col">Total Number of Transaction</th>
+                        <th scope="col">Service Charge(Rs)</th>
+                        <th scope="col">Statutory Charge(if any)</th>
+                        <th scope="col">Total Revenue</th>
                 </thead>
         
 
                 {% for item in filtered_result %}
                 <tr> 
-                    <td>{{ item.person_name }}</td>
-                    <td>{{ item.designation }}</td>
-                    <td>{{ item.organization }}</td>
-                    <td>{{ item.work_location }}</td>
-                    <td>{{ item.mobile_number }}</td>
-                    <td>{{ item.email_id}}</td>
+                              <td >{{ item.service_nm }}</td>
+                        <td> {{ item.total_transactions }}</td>
+                        <td> {{ item.service_charge }}</td>
+                        <td> {{ item.statutory_charge }}</td>
+                        <td> {{ item.total_revenue }}</td>
                 </tr>
                 {% endfor %}
  

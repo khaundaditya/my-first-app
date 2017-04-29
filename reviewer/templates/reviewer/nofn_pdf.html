@@ -56,23 +56,28 @@
 
               <table class="table">
               <thead>
-                    <th>Person Name</th>
-                    <th>Designation</th>
-                    <th>Organization</th>
-                    <th>Work Location</th>
-                    <th>Mobile Number</th>
-                    <th>Email Id</th>
+                        <th scope="col">Name of GP</th>
+                        <th scope="col">Block Name</th>
+                        <th scope="col">Whether Fiber layed upto GP</th>
+                        <th scope="col">GPON aggregration equipment installed at Block?</th>
+                        <th scope="col">Is GPON termination done at GP?</th>
+                        <th scope="col">NOFN PoP is Build at</th>
+                        <th scope="col">Access to Network Facility extendible upto village?</th>
+                        <th scope="col">Remarks</th>
                 </thead>
         
 
                 {% for item in filtered_result %}
                 <tr> 
-                    <td>{{ item.person_name }}</td>
-                    <td>{{ item.designation }}</td>
-                    <td>{{ item.organization }}</td>
-                    <td>{{ item.work_location }}</td>
-                    <td>{{ item.mobile_number }}</td>
-                    <td>{{ item.email_id}}</td>
+                        <td >{{ item.gp_name }}</td>
+                        <td>{{ item.block_name }}</td>
+
+                        <td> {{ item.is_fibre_layered_upto_gp }}</td>
+                        <td> {{ item.is_gpon_installed_at_block }}</td>
+                        <td> {{ item.is_gpon_termination_done_at_GP }}</td>
+                        <td> {{ item.nofn_pop_build_at }}</td>
+                        <td> {{ item.is_network_access_available_at_village }}</td>
+                        <td> {{ item.remarks }}</td>
                 </tr>
                 {% endfor %}
  

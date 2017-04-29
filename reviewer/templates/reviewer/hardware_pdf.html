@@ -56,23 +56,23 @@
 
               <table class="table">
               <thead>
-                    <th>Person Name</th>
-                    <th>Designation</th>
-                    <th>Organization</th>
-                    <th>Work Location</th>
-                    <th>Mobile Number</th>
-                    <th>Email Id</th>
+                        <th scope="col">Name of Hardware</th>
+                        <th scope="col">Quantity/No</th>
+                        <th scope="col">Current Status</th>
+                        <th scope="col">Number of Hardware Used and In stock</th>
+                        <th scope="col">Is AMC Available?</th>
+                        <th scope="col">Remarks</th>
                 </thead>
         
 
                 {% for item in filtered_result %}
                 <tr> 
-                    <td>{{ item.person_name }}</td>
-                    <td>{{ item.designation }}</td>
-                    <td>{{ item.organization }}</td>
-                    <td>{{ item.work_location }}</td>
-                    <td>{{ item.mobile_number }}</td>
-                    <td>{{ item.email_id}}</td>
+                           <td> {{ item.hardware_nm }}</td>
+                          <td> {{ item.quantity }}</td>
+                          <td> {{ item.status }}</td>
+                          <td> {{ item.hw_in_stock }}</td>
+                          <td> {{ item.is_amc_avaialable }}</td>
+                          <td> {{ item.remarks }}</td>
                 </tr>
                 {% endfor %}
  

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% if override %}
+    {% block inheritable %}
+    {% endblock %}
+{% endif %}
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+<html>
+<h2 align=center> <strong>{{ report_name }} Report </strong></h2>
+<body>
+ {% if include_href %}
+<a target="_blank" href="{% url 'reviewer:generate_pdf' %}?period={{YYYYMM}}&district={{district}}&report={{report_name}}">Export PDF</a>
+{% endif %}
+{% if messages %}
+<ul class="messages">
+{% for message in messages %}
+<li class="{{ message.tags }}">
+{{ message|safe }}
+<a href="#" class="close"></a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+<table border=2>
+{% if csrf %}
+{% csrf_token %}
+{% endif %}
+	<h3> District: <strong>{{ district_full_name }}</strong> </h3>
+	<h3> Report Month: <strong>{{ YYYYMM }}</strong> </h3>
+    <tr>
+                        <th scope="col">Name of POPs</th>
+                        <th scope="col">Distance from HQ</th>
+                        <th scope="col">Name of offices Connected</th>
+                        <th scope="col">Distance of Office from POP</th>
+                        <th scope="col">Type of Horizontal Connectivity</th>
+                        <th scope="col">Bandwidth</th>
+                        <th scope="col">Is Functional?</th>
+                        <th scope="col">When it was last up?</th>
+                        <th scope="col">Manpower(s) Responsible</th>
+                        <th scope="col">Reason(s) of not working</th>
+                        <th scope="col">Remarks</th>
+    </tr>
+    {% for item in filtered_result %}
+    <tr> 
+     <td >{{ item.pop_names }}</td>
+                        <td>{{ item.distance_from_hq }}</td>
+
+                        <td> {{ item.offices_connected_with_pop }}</td>
+                        <td> {{ item.distance_from_pop }}</td>
+                        <td> {{ item.connectivity_types }}</td>
+                        <td> {{ item.internet_bandwidth }}</td>
+                        <td> {{ item.is_functional }}</td>
+                        <td> {{ item.when_last_up }}</td>
+                         <td> {{ item.pop_manpower }}</td>
+                        <td> {{ item.reasons_for_not_working }}</td>
+                        <td> {{ item.remarks }}</td>
+    {% endfor %}
+</table>
+ <form method="post" action="">
+ {% if include_href %}
+ <a target="_blank" href="{% url 'reviewer:reviewer_comment' %}?report={{report_name}}&today={{YYYYMM}}&district={{district}}">
+ Comment</a> 
+ {% endif %}
+</form>
+</body>
+</html>
+{% endblock %}

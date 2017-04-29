@@ -56,23 +56,32 @@
 
               <table class="table">
               <thead>
-                    <th>Person Name</th>
-                    <th>Designation</th>
-                    <th>Organization</th>
-                    <th>Work Location</th>
-                    <th>Mobile Number</th>
-                    <th>Email Id</th>
+                        <th scope="col">Department/Branch</th>
+                        <th scope="col">Delivery Channel</th>
+                        <th scope="col">Name of Online Application</th>
+                        <th scope="col">Digital Signature</th>
+                        <th scope="col">Is Work Flow Computerized?</th>
+                        <th scope="col">Language</th>
+                        <th scope="col">Is Legacy Data Digitized</th>
+                        <th scope="col">If Yes,From When</th>
+                        <th scope="col">Where is digitized data stored?</th>
+                        <th scope="col">Remarks</th>
+    </tr>
                 </thead>
         
 
                 {% for item in filtered_result %}
                 <tr> 
-                    <td>{{ item.person_name }}</td>
-                    <td>{{ item.designation }}</td>
-                    <td>{{ item.organization }}</td>
-                    <td>{{ item.work_location }}</td>
-                    <td>{{ item.mobile_number }}</td>
-                    <td>{{ item.email_id}}</td>
+                          <td>{{ item.associated_line_department }}</td>
+                        <td> {{ item.delivery_channel }}</td>
+                        <td> {{ item.name_of_application }}</td>
+                        <td> {{ item.is_digitally_signed }}</td>
+                        <td> {{ item.is_computerized }}</td>
+                        <td> {{ item.language_of_submission }}</td>
+                        <td> {{ item.is_legacy_data_digitized }}</td>
+                        <td> {{ item.from_when }}</td>
+                        <td> {{ item.mode_of_storage }}</td>
+                        <td> {{ item.remarks }}</td>
                 </tr>
                 {% endfor %}
  

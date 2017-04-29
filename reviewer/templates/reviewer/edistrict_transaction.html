@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% if override %}
+    {% block inheritable %}
+    {% endblock %}
+{% endif %}
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+<html>
+<h2 align=center> <strong>{{ report_name }} Report </strong></h2>
+<body>
+<a href="{% url 'reviewer:generate_pdf' %}?period={{YYYYMM}}&district={{district}}&report={{report_name}}">Export PDF</a>
+{% if messages %}
+<ul class="messages">
+{% for message in messages %}
+<li class="{{ message.tags }}">
+{{ message|safe }}
+<a href="#" class="close"></a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+<table border=2>
+{% if csrf %}
+{% csrf_token %}
+{% endif %}
+	<h3> District: <strong>{{ district }}</strong> </h3>
+	<h3> Report Month: <strong>{{ YYYYMM }}</strong> </h3>
+    <thead>
+        
+                             <th scope="col">Service Name</th>
+                        <th scope="col">Total Number of Transaction</th>
+                        <th scope="col">Service Charge(Rs)</th>
+                        <th scope="col">Statutory Charge(if any)</th>
+                        <th scope="col">Total Revenue</th>
+                    
+    </thead>
+        {% for item in filtered_result %}
+        <tr>
+                         <td >{{ item.service_nm }}</td>
+                        <td> {{ item.total_transactions }}</td>
+                        <td> {{ item.service_charge }}</td>
+                        <td> {{ item.statutory_charge }}</td>
+                        <td> {{ item.total_revenue }}</td>
+        </tr>
+            
+        {% endfor %}
+</table>
+ <form method="post" action="">
+<a href="{% url 'reviewer:reviewer_comment' %}?report={{report_name}}&today={{YYYYMM}}&district={{district}}">Comment</a>
+</form>
+</body>
+</html>
+{% endblock %}
