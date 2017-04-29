@@ -28,9 +28,20 @@ urlpatterns = [
 	name='password_reset_complete'),
 	#Registation URL
 	url(r'^register/$',views.register,name='register'),
+	
 	#Other Apps
+	#Applicant Side
+
+	url(r'^hardware/$',generateHardwareReport,name='hardware'),
 	url(r'^manpower/$',generateManpowerReport,name='manpower'),
 	url(r'^csc/$',generateCSCReport,name='csc'),
+	url(r'^swan/$',generateSWANReport,name='swan'),
+	url(r'^digital_literacy/$',generateDLReport,name='digital_literacy'),
+	url(r'^nofn/$',generateNOFNeport,name='nofn'),
+	url(r'^software/$',generateSoftwareReport,name='software'),
+	url(r'^g2cservice/$',generateG2CServiceReport,name='g2cservice'),
+	url(r'^edist_transaction/$',generateeDistrictTransactionReport,name='edist_transaction'),
+
 	url(r'^generate_report/$',generateReport,name='generate_report'),
 	url(r'^populate_comment/$',populateComment,name='populate_comment'),
 	url(r'^reviewer_comment/$',handleComments,name='reviewer_comment'),
