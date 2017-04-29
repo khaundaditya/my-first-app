@@ -13,10 +13,20 @@
 </script>
 
 {% endblock %}
+{% if messages %}
+<ul class="messages">
+{% for message in messages %}
+<li class="{{ message.tags }}">
+{{ message|safe }}
+<a href="#" class="close"></a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
 {% block content %}
 <div>
     <div class="entry">
-        <form method="post" action="">
+        <form method="post" action="">{% csrf_token %}
          <h3 align='center'><strong><u>Software Report </strong></u><br><br></h3>
          {% for form in formset.forms %}
                 {% if forloop.first %}
@@ -44,7 +54,6 @@
                     <tr id="{{ form.prefix }}-row">
                        <!--  <td style="text-align:center;">{{ form.preferred }}</td> -->
                         <td>{{ form.appl_nm }}</td>
-
                         <td> {{ form.appl_owner }}</td>
                         <td> {{ form.appl_objective }}</td>
                         <td> {{ form.stakeholder_details }}</td>

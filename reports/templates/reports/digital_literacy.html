@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}SWAN Report{% endblock %}
+{% block title %}Digital Literacy Report{% endblock %}
 
 {% block extrahead %}
 
@@ -13,10 +13,21 @@
 </script>
 
 {% endblock %}
+{% if messages %}
+<ul class="messages">
+{% for message in messages %}
+<li class="{{ message.tags }}">
+{{ message|safe }}
+<a href="#" class="close"></a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
 {% block content %}
+
 <div>
     <div class="entry">
-        <form method="post" action="">
+        <form method="post" action="">{% csrf_token %}
          <h3 align='center'><strong><u>Digital Literacy Report </strong></u><br><br></h3>
          {% for form in formset.forms %}
                 {% if forloop.first %}
@@ -45,7 +56,6 @@
                        <!--  <td style="text-align:center;">{{ form.preferred }}</td> -->
                         <td >{{ form.lac_name }}</td>
                         <td>{{ form.num_training_centres }}</td>
-
                         <td> {{ form.num_examination_centres_near_gp }}</td>
                         <td> {{ form.num_beneficiaries_registered }}</td>
                         <td> {{ form.num_beneficiaries_under_training }}</td>

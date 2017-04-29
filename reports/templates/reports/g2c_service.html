@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Manpower Report{% endblock %}
+{% block title %}G2C Service Report{% endblock %}
 
 {% block extrahead %}
 
@@ -48,7 +48,7 @@
         <form method="post" action="">{% csrf_token %}
        
     
-        <h3 align='center'><strong><u>Manpower Report </strong></u><br><br></h3>
+        <h3 align='center'><strong><u>G2C Service Report </strong></u><br><br></h3>
          {% for form in formset.forms %}
                 {% if forloop.first %}
                  <strong>District: </strong>{{ form.district }}<br><br>
@@ -58,28 +58,37 @@
      
 
        <!--  {{ formset.non_form_errors }} -->
+
             <table id="id_contact_info_table" border="2" cellpadding="0" cellspacing="1">
                 <thead>
                     <tr>
-                        <th scope="col">Person Name</th>
-                        <th scope="col">Designation </th>
-                        <th scope="col">Organization</th>
-                        <th scope="col">Work Location</th>
-                        <th scope="col">Mobile Number</th>
-                        <th scope="col">Email Id</th>
+                        <th scope="col">Service Name</th>
+                        <th scope="col">Delivery Channel</th>
+                        <th scope="col">Name of Online Application</th>
+                        <th scope="col">Digital Signature</th>
+                        <th scope="col">Is Work Flow Computerized?</th>
+                        <th scope="col">Language</th>
+                        <th scope="col">Is Legacy Data Digitized</th>
+                        <th scope="col">If Yes,From When</th>
+                        <th scope="col">Where is digitized data stored?</th>
+                        <th scope="col">Remarks</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for form in formset.forms %}
                     <tr id="{{ form.prefix }}-row">
                        <!--  <td style="text-align:center;">{{ form.preferred }}</td> -->
-                        <td >{{ form.person_name }}</td>
-                        <td>{{ form.designation }}</td>
-
-                        <td> {{ form.organization }}</td>
-                        <td> {{ form.work_location }}</td>
-                        <td> {{ form.mobile_number }}</td>
-                        <td> {{ form.email_id }}</td>
+                        <td >{{ form.service_nm }}</td>
+                        <td> {{ form.delivery_channel }}</td>
+                        <td> {{ form.name_of_application }}</td>
+                        <td> {{ form.is_digitally_signed }}</td>
+                        <td> {{ form.is_computerized }}</td>
+                        <td> {{ form.language_of_submission }}</td>
+                        <td> {{ form.is_legacy_data_digitized }}</td>
+                        <td> {{ form.from_when }}</td>
+                        <td> {{ form.mode_of_storage }}</td>
+                        <td> {{ form.remarks }}</td>
+ 
                     </tr>
                     {% endfor %}
                 </tbody>

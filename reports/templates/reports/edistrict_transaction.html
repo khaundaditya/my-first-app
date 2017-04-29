@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Manpower Report{% endblock %}
+{% block title %}e-District Transaction{% endblock %}
 
 {% block extrahead %}
 
@@ -48,7 +48,7 @@
         <form method="post" action="">{% csrf_token %}
        
     
-        <h3 align='center'><strong><u>Manpower Report </strong></u><br><br></h3>
+        <h3 align='center'><strong><u>e-District Transaction Report </strong></u><br><br></h3>
          {% for form in formset.forms %}
                 {% if forloop.first %}
                  <strong>District: </strong>{{ form.district }}<br><br>
@@ -58,28 +58,27 @@
      
 
        <!--  {{ formset.non_form_errors }} -->
+
             <table id="id_contact_info_table" border="2" cellpadding="0" cellspacing="1">
                 <thead>
                     <tr>
-                        <th scope="col">Person Name</th>
-                        <th scope="col">Designation </th>
-                        <th scope="col">Organization</th>
-                        <th scope="col">Work Location</th>
-                        <th scope="col">Mobile Number</th>
-                        <th scope="col">Email Id</th>
+                        <th scope="col">Service Name</th>
+                        <th scope="col">Total Number of Transaction</th>
+                        <th scope="col">Service Charge(Rs)</th>
+                        <th scope="col">Statutory Charge(if any)</th>
+                        <th scope="col">Total Revenue</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     {% for form in formset.forms %}
                     <tr id="{{ form.prefix }}-row">
                        <!--  <td style="text-align:center;">{{ form.preferred }}</td> -->
-                        <td >{{ form.person_name }}</td>
-                        <td>{{ form.designation }}</td>
-
-                        <td> {{ form.organization }}</td>
-                        <td> {{ form.work_location }}</td>
-                        <td> {{ form.mobile_number }}</td>
-                        <td> {{ form.email_id }}</td>
+                        <td >{{ form.service_nm }}</td>
+                        <td> {{ form.total_transactions }}</td>
+                        <td> {{ form.service_charge }}</td>
+                        <td> {{ form.statutory_charge }}</td>
+                        <td> {{ form.total_revenue }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
