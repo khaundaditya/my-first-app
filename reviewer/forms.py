@@ -1,6 +1,7 @@
 from django import forms
 from .models import Comment
-from reports.models import DISTRICT_CHOICES
+#from .models import DISTRICT_CHOICES
+from mysite.custom_config import *
 class ReportForm(forms.Form):
 	Reports = (
 		 ('-------', ("--------")),
@@ -14,7 +15,7 @@ class ReportForm(forms.Form):
 
    )
 	district = forms.ChoiceField(choices=DISTRICT_CHOICES,label="District")
-	report_name = forms.ChoiceField(choices=Reports,label="Report Name")
+	report_name = forms.ChoiceField(choices=REPORT_NAMES,label="Report Name")
 	YYYYMM= forms.CharField(required=True,label="YYYYMM")
 
 class CommentForm(forms.ModelForm):

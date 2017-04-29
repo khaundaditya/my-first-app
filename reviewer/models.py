@@ -32,7 +32,7 @@ class ReportSnapShot(models.Model):
 	def __str__(self):
 		return "{0}".format( self.content)
 	class Meta:
-		unique_together=(( 'district','owner'),)
+		unique_together=(( 'district','owner','report_type'),)
 
 class Comment(models.Model):
 	#post =  models.UUIDField(unique=True,default=uuid.uuid4, editable=False)

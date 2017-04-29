@@ -20,7 +20,7 @@ import binascii
 import re
 from django.db import connection, transaction
 from django.http import Http404
-
+from mysite.custom_config import *
 # Create your views here.
 dict_q = {}
 report_templates = { 'Manpower' : 'reviewer/mp.html',
@@ -54,9 +54,9 @@ def generateReport(request):
 				else:
 					dict_q[report_name.encode('ascii')] = filtered_result
 					print "updating state of snapshot"
-					queryset.update(state='inprogress')
-					#return render(request,'reviewer/snapshot.html',{'user':request.user,'filtered_result':filtered_result})
-					return HttpResponse(filtered_result)
+					#queryset.update(state='inprogress')
+					return render(request,'reviewer/snapshot.html',{'user':request.user,'filtered_result':filtered_result})
+					#return HttpResponse(filtered_result)
 			else:
 				queryset = _getSpecficModelQuerySet(report_name)
 
