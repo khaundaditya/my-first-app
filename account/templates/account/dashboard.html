@@ -15,7 +15,13 @@
 	        <ul>
 	            <li><a href="{% url 'reports:manpower' %}">Manpower Report</a></li>
 	          	<li><a href="{% url 'reports:csc' %}">CSC Report</a></li>
-	            
+	            <li><a href="{% url 'reports:hardware' %}">Hardware Report</a></li>
+	          	<li><a href="{% url 'reports:software' %}">Software Report</a></li>
+	          	<li><a href="{% url 'reports:nofn' %}">NOFN Report</a></li>
+	          	<li><a href="{% url 'reports:digital_literacy' %}">Digital Literacy Report</a></li>
+	            <li><a href="{% url 'reports:g2cservice' %}">G2C Service Report</a></li>
+	          	<li><a href="{% url 'reports:edist_transaction' %}">e-District Transaction Report</a></li>
+	          	<li><a href="{% url 'reports:swan' %}">SWAN Report</a></li>
 	        </ul>
 	     {% endif %}
 	     {% if group == "Reviewer" %}
