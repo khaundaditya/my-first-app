@@ -13,11 +13,12 @@ from django.conf import settings
 import os
 import re
 
-from .forms import HardwareReportForm,ManpowerReportForm,CSCReportForm,SWANReportForm,DigitalLiteracyReportForm,NOFNReportForm,SoftwareReportForm
+from .forms import *
 #from .models import HardwareReport,ManpowerReport,CSCReport,HardwareReport,SWANReport,DigitalLiteracyReport,NOFNReport,SoftwareReport
 from django.contrib.auth.decorators import login_required
 from reviewer.models import *
 from .models import *
+from mysite import custom_config
 #from .models import HardwareReport
 # Create your views here.
 district_dict = dict(DISTRICT_CHOICES)
@@ -26,7 +27,6 @@ def generateHardwareReport(request):
 	HardNormSet = formset_factory(HardwareReportForm,extra=2)
 	context = {}
 	if request.method == 'POST':
-		#form = ManpowerReportForm(request.POST)
 		formset = HardNormSet(request.POST)
 		try:
 			if formset.is_valid():
@@ -39,15 +39,32 @@ def generateHardwareReport(request):
 						dist = com_dist
 					else:
 						com_dist = dist
+					timestamp  = timezone.now()
+					today_date=timestamp.strftime('%Y%m%d')
+					YYYYMM = timestamp.strftime('%Y%m')
 					district_full_name = district_dict[dist]
-					dl = HardwareReport( created_date=timezone.now(),hardware_nm=cd['hardware_nm'],\
-										quantity = cd['hardware_nm'],status=cd['hardware_nm'],\
-										hw_in_stock = cd['hardware_nm'],is_amc_avaialable=is_amc_avaialable['is_amc_avaialable'],\
-										remarks=cd['remarks'],district=dist)
+					hw_db_obj = HardwareReport( hardware_nm=cd['hardware_nm'],\
+										quantity = cd['quantity'],status=cd['status'],\
+										hw_in_stock = str(cd['hw_in_stock']),is_amc_avaialable=cd['is_amc_avaialable'],\
+										remarks=cd['remarks'],district=dist,updated_date=today_date,user_name=request.user)
 					print(cd)	
-					#form.save()
-					dl.save()
+					try:
+						if _isReportInProgress(dist,request.user,'Software'):
+							msg = "your previous submission for Hardware  report hasn't yet be closed.New data willn't be saved"
+							messages.warning(request, msg)
+							print(msg)
+						else:							
+							hw_db_obj.save()
+							
+					except IntegrityError:
+						msg = 'Similar set of data already submitted today.Hence can\'t be re-submitted'
+						messages.error(request, msg)
+				saved_snapshot =_updateSnapshotData(request.user,'Hardware',YYYYMM,dist)
 				return render(request,'reports/csc_submission.html',{'form':form})
+			else:
+				print "FormSet is not valid"
+				print formset.errors	
+			
 		except ValidationError:
 			formset = None
 	else:
@@ -72,15 +89,33 @@ def generateSoftwareReport(request):
 						dist = com_dist
 					else:
 						com_dist = dist
-					dl = SoftwareReport( created_date=timezone.now(),appl_owner=cd['appl_owner'],appl_objective=cd['appl_objective'],\
+					timestamp  = timezone.now()
+					today_date=timestamp.strftime('%Y%m%d')
+					YYYYMM = timestamp.strftime('%Y%m')
+					sw_db_obj = SoftwareReport( appl_owner=cd['appl_owner'],appl_objective=cd['appl_objective'],\
 						stakeholder_details=cd['stakeholder_details'],date_of_commisioning=cd['date_of_commisioning'],\
 						name_of_application_developer=cd['name_of_application_developer'],\
 						appl_platform_details=cd['appl_platform_details'],\
-						future_roadmap=cd['future_roadmap'],support_requirements=cd['support_requirements'],district=dist,user_name=request.user)
+						future_roadmap=cd['future_roadmap'],support_requirements=cd['support_requirements'],updated_date=today_date,district=dist,user_name=request.user)
 					print(cd)	
-					#form.save()
-					dl.save()
+					try:
+						if _isReportInProgress(dist,request.user,'Software'):
+							msg = "your previous submission for Software  report hasn't yet be closed.New data willn't be saved"
+							messages.warning(request, msg)
+							print(msg)
+						else:							
+							sw_db_obj.save()
+							
+					except IntegrityError:
+						msg = 'Similar set of data already submitted today.Hence can\'t be re-submitted'
+						messages.error(request, msg)	
+					saved_snapshot =_updateSnapshotData(request.user,'Software',YYYYMM,dist)
+					return render(request,'reports/csc_submission.html',{'form':form})
+
 				return render(request,'reports/csc_submission.html',{'form':form})
+			else:
+				print "FormSet is not valid"
+				print formset.errors	
 		except ValidationError:
 			formset = None
 	else:
@@ -107,15 +142,32 @@ def generateNOFNeport(request):
 						dist = com_dist
 					else:
 						com_dist = dist
-					dl = NOFNReport( created_date=timezone.now(),gp_name=cd['gp_name'],block_name=cd['block_name'],is_fibre_layered_upto_gp=cd['is_fibre_layered_upto_gp'],\
+					timestamp  = timezone.now()
+					today_date=timestamp.strftime('%Y%m%d')
+					YYYYMM = timestamp.strftime('%Y%m')
+					nfn_db_obj = NOFNReport( gp_name=cd['gp_name'],block_name=cd['block_name'],is_fibre_layered_upto_gp=cd['is_fibre_layered_upto_gp'],\
 										is_gpon_installed_at_block=cd['is_gpon_installed_at_block'],\
 										is_gpon_termination_done_at_GP=cd['is_gpon_termination_done_at_GP'],nofn_pop_build_at=cd['nofn_pop_build_at'],\
 										is_network_access_available_at_village=cd['is_network_access_available_at_village'],\
-										remarks=cd['remarks'],district=dist,user_name=requset.user)
+										remarks=cd['remarks'],updated_date=today_date,district=dist,user_name=request.user)
 					print(cd)	
-					#form.save()
-					dl.save()
+					try:
+						if _isReportInProgress(dist,request.user,'NOFN'):
+							msg = "your previous submission for NOFN  report hasn't yet be closed.New data willn't be saved"
+							messages.warning(request, msg)
+							print(msg)
+						else:							
+							nfn_db_obj.save()
+							
+					except IntegrityError:
+						msg = 'Similar set of data already submitted today.Hence can\'t be re-submitted'
+						messages.error(request, msg)
+
+				saved_snapshot =_updateSnapshotData(request.user,'NOFN',YYYYMM,dist)
 				return render(request,'reports/csc_submission.html',{'form':form})
+			else:
+				print "FormSet is not valid"
+				print formset.errors
 		except ValidationError:
 			formset = None
 	else:
@@ -130,7 +182,6 @@ def generateDLReport(request):
 	DLFormSet = formset_factory(DigitalLiteracyReportForm,extra=2)
 	context = {}
 	if request.method == 'POST':
-		#form = ManpowerReportForm(request.POST)
 		formset = DLFormSet(request.POST)
 		try:
 			if formset.is_valid():
@@ -143,14 +194,34 @@ def generateDLReport(request):
 						dist = com_dist
 					else:
 						com_dist = dist
-					dl = DigitalLiteracyReport( created_date=timezone.now(),lac_name=cd['lac_name'],\
-						num_training_centres=cd['num_training_centres'],num_examination_centres_near_gp=cd['num_examination_centres_near_gp'],distance_from_pop=cd['num_beneficiaries_registered'],\
-						num_beneficiaries_under_training=cd['num_beneficiaries_under_training'],num_beneficiaries_trained=cd['num_beneficiaries_trained'],num_beneficiaries_appeared_in_exam=cd['num_beneficiaries_appeared_in_exam'],\
-						num_beneficiaries_passed_in_exam=cd['num_beneficiaries_passed_in_exam'],district=dist,user_name=request.user)
-					print(cd)	
+					timestamp  = timezone.now()
+					today_date=timestamp.strftime('%Y%m%d')
+					YYYYMM = timestamp.strftime('%Y%m')
+					dl_db_obj = DLReport( lac_name=cd['lac_name'],\
+						num_training_centres=cd['num_training_centres'],num_examination_centres_near_gp=cd['num_examination_centres_near_gp'],\
+						num_beneficiaries_registered = cd['num_beneficiaries_registered'],num_beneficiaries_under_training=cd['num_beneficiaries_under_training'],num_beneficiaries_trained=cd['num_beneficiaries_trained'],num_beneficiaries_appeared_in_exam=cd['num_beneficiaries_appeared_in_exam'],\
+						num_beneficiaries_passed_in_exam=cd['num_beneficiaries_passed_in_exam'],updated_date=today_date,district=dist,user_name=request.user)
+					print(cd)
 					#form.save()
-					dl.save()
+					try:
+						if _isReportInProgress(dist,request.user,'DigitalLiteracy'):
+							msg = "your previous submission for Digital Literacy  report hasn't yet be closed.New data willn't be saved"
+							messages.warning(request, msg)
+							print(msg)
+						else:
+							print "Going to save Object"							
+							dl_db_obj.save()
+							
+					except IntegrityError:
+						msg = 'Similar set of data already submitted today.Hence can\'t be re-submitted'
+						messages.error(request, msg)
+						#return HttpResponse("ERROR: Data already exists!")	
+				saved_snapshot =_updateSnapshotData(request.user,'DigitalLiteracy',YYYYMM,dist)
 				return render(request,'reports/csc_submission.html',{'form':form})
+				
+			else:
+				print "FormSet is not valid"
+				print formset.errors
 		except ValidationError:
 			formset = None
 	else:
@@ -169,20 +240,33 @@ def generateSWANReport(request):
 			if formset.is_valid():
 				com_dist = ''
 				for form in formset:
+					cd = form.cleaned_data
 					dist = cd['district']
 					if not dist:
 						dist = com_dist
 					else:
 						com_dist = dist
-					cd = form.cleaned_data
-					swan = SWANReport( created_date=timezone.now(),pop_names=cd['pop_names'],\
+					timestamp  = timezone.now()
+					today_date=timestamp.strftime('%Y%m%d')
+					YYYYMM = timestamp.strftime('%Y%m')
+					swan_db_obj = SWANReport( pop_names=cd['pop_names'],\
 						distance_from_hq=cd['distance_from_hq'],offices_connected_with_pop=cd['offices_connected_with_pop'],distance_from_pop=cd['distance_from_pop'],\
 						connectivity_types=cd['connectivity_types'],internet_bandwidth=cd['internet_bandwidth'],is_functional=cd['is_functional'],\
 						when_last_up=cd['when_last_up'],pop_manpower=cd['pop_manpower'],\
-						reasons_for_not_working=cd['reasons_for_not_working'], remarks=cd['remarks'],district=dist,user_name=request.user)
+						reasons_for_not_working=cd['reasons_for_not_working'], remarks=cd['remarks'],updated_date=today_date,district=dist,user_name=request.user)
 					print(cd)	
-					#form.save()
-					swan.save()
+					try:
+						if _isReportInProgress(dist,request.user,'SWAN'):
+							msg = "your previous submission for SWAN  report hasn't yet be closed.New data willn't be saved"
+							messages.warning(request, msg)
+							print(msg)
+						else:							
+							swan_db_obj.save()
+							
+					except IntegrityError:
+						msg = 'Similar set of data already submitted today.Hence can\'t be re-submitted'
+						messages.error(request, msg)	
+				saved_snapshot =_updateSnapshotData(request.user,'SWAN',YYYYMM,dist)
 				return render(request,'reports/csc_submission.html',{'form':form})
 		except ValidationError:
 			formset = None
@@ -209,8 +293,9 @@ def generateCSCReport(request):
 						dist = com_dist
 					else:
 						com_dist = dist
-						
-					today_date=_getTodayDate()						
+					timestamp  = timezone.now()	
+					today_date=_getTodayDate()	
+					YYYYMM = timestamp.strftime('%Y%m')					
 					csc = CSCReport( omt_id=cd['omt_id'],\
 						vle_name=cd['vle_name'],gaon_panchayat_name=cd['gaon_panchayat_name'],address=cd['address'],\
 						mobile_number=cd['mobile_number'],infra_details=cd['infra_details'],connectivity_modes=cd['connectivity_modes'],\
@@ -219,9 +304,19 @@ def generateCSCReport(request):
 					print(cd)	
 					#form.save()
 					try:
-						csc.save()
+						#csc.save()
+
+						if _isReportInProgress(dist,request.user,'CSC'):
+							msg = "your previous submission for CSC  report hasn't yet be closed.New data willn't be saved"
+							messages.warning(request, msg)
+							print(msg)
+						else:							
+							csc.save()
+							
 					except IntegrityError:
-						messages.warning(request, 'Duplicate Record ' + cd['omt_id'] +' already exists')
+						msg = 'Similar set of data already submitted today.Hence can\'t be re-submitted'
+						messages.error(request, msg)
+				saved_snapshot = _updateSnapshotData(request.user,'CSC',YYYYMM,dist)
 				return render(request,'reports/csc_submission.html',{'form':form})
 			else:
 				print formset.errors
@@ -270,8 +365,9 @@ def generateManpowerReport(request):
 							manpower.save()
 							
 					except IntegrityError:
-						return HttpResponse("ERROR: Data already exists!")
-				_updateSnapshotData(request.user,'Manpower',YYYYMM,dist)
+						msg = 'Similar set of data already submitted today.Hence can\'t be re-submitted'
+						messages.error(request, msg)
+				saved_snapshot =_updateSnapshotData(request.user,'Manpower',YYYYMM,dist)
 
 				return render(request,'reports/csc_submission.html',{'form':form})
 			else:
@@ -289,8 +385,128 @@ def generateManpowerReport(request):
 	#return render(request, 'reports/reports.html', {'HardwareReport': HardwareReport.objects.all()})
 
 @login_required
+def generateG2CServiceReport(request):
+
+	G2CServiceFormSet = formset_factory(G2CServiceReportForm,extra=3)
+	context = {}
+	if request.method == 'POST':
+		#form = ManpowerReportForm(request.POST)
+		today_date = ''
+		formset = G2CServiceFormSet(request.POST)
+		try:
+			if formset.is_valid():
+				com_dist = ''
+				for form in formset:
+					
+					cd = form.cleaned_data
+					dist = cd['district']
+					if not dist:
+						dist = com_dist
+					else:
+						com_dist = dist
+					timestamp  = timezone.now()
+					today_date=timestamp.strftime('%Y%m%d')
+					YYYYMM = timestamp.strftime('%Y%m')
+					department = SERVICE_TO_DEPARTMENT_MAP[cd['service_nm']]
+					g2c_db_obj = g2cServiceReport(service_nm = cd['service_nm'],associated_line_department=department,\
+						delivery_channel = cd['delivery_channel'],name_of_application=cd['name_of_application'],\
+						is_digitally_signed=cd['is_digitally_signed'],is_computerized=cd['is_computerized'],\
+						from_when=cd['from_when'],mode_of_storage=cd['mode_of_storage'],remarks=cd['mode_of_storage'],\
+						district=dist,updated_date=today_date,user_name=request.user)
+
+					try:
+						if _isReportInProgress(dist,request.user,'G2CServices'):
+							msg = "your previous submission for G2C Services  report hasn't yet be closed.New data willn't be saved"
+							messages.warning(request, msg)
+							print(msg)
+						else:							
+							g2c_db_obj.save()
+							
+					except IntegrityError:
+						msg = 'Similar set of data already submitted today.Hence can\'t be re-submitted'
+						messages.error(request, msg)
+				saved_snapshot =_updateSnapshotData(request.user,'G2CServices',YYYYMM,dist)
+
+				return render(request,'reports/csc_submission.html',{"form":form})
+			else:
+				print "FormSet is not valid"
+				print formset.errors
+		except ValidationError:
+			formset = None
+	else:
+		#form =  ManpowerReportForm()
+		#context = {'formset': ManpowerFormSet(),'loop_times': range(1,3)}
+
+		context = {'formset': G2CServiceFormSet() }
+
+	return render(request,'reports/g2c_service.html',context)
+	#return render(request, 'reports/reports.html', {'HardwareReport': HardwareReport.objects.all()})
+
+@login_required
+def generateeDistrictTransactionReport(request):
+
+	eDistTransFormSet = formset_factory(eDistrictReportForm,extra=3)
+	context = {}
+	if request.method == 'POST':
+		#form = ManpowerReportForm(request.POST)
+		today_date = ''
+		formset = eDistTransFormSet(request.POST)
+		try:
+			if formset.is_valid():
+				com_dist = ''
+				for form in formset:
+					
+					cd = form.cleaned_data
+					dist = cd['district']
+					if not dist:
+						dist = com_dist
+					else:
+						com_dist = dist
+					timestamp  = timezone.now()
+					today_date=timestamp.strftime('%Y%m%d')
+					YYYYMM = timestamp.strftime('%Y%m')
+
+					department = SERVICE_TO_DEPARTMENT_MAP[cd['service_nm']]
+					edist_db_object = ServiceTransReport( service_nm=cd['service_nm'],\
+						associated_line_department=department ,total_transactions=cd['total_transactions'],service_charge=cd['service_charge'],statutory_charge=cd['statutory_charge'],
+						total_revenue = cd['total_revenue'],district = dist,updated_date=today_date,user_name=request.user
+						)	
+					#form.save()
+					print(cd)
+					try:
+						if _isReportInProgress(dist,request.user,'eDistrictTrans'):
+							msg = "your previous submission for eDistrict Transaction  report hasn't yet be closed.New data willn't be saved"
+							messages.warning(request, msg)
+							print(msg)
+						else:						
+							edist_db_object.save()
+							
+					except IntegrityError:
+						msg = 'Similar set of data already submitted today.Hence can\'t be re-submitted'
+						messages.error(request, msg)
+				saved_snapshot =_updateSnapshotData(request.user,'eDistrictTrans',YYYYMM,dist)
+
+				return render(request,'reports/csc_submission.html',{"form":form})
+			else:
+				print "FormSet is not valid"
+				print formset.errors
+		except ValidationError:
+			formset = None
+	else:
+		#form =  ManpowerReportForm()
+		#context = {'formset': ManpowerFormSet(),'loop_times': range(1,3)}
+
+		context = {'formset': eDistTransFormSet() }
+
+	return render(request,'reports/edistrict_transaction.html',context)
+	#return render(request, 'reports/reports.html', {'HardwareReport': HardwareReport.objects.all()})
+
+@login_required
 def updateManpowerReport(request):
 	return HttpResponse('true')
+
+
+
 """
 Private Helper Routines
 """
@@ -299,12 +515,29 @@ def _getSpecficModelQuerySet(report_name):
 		return  ManpowerReport.objects.all()
 	elif report_name == 'CSC':
 		return  CSCReport.objects.all()
+	elif report_name == 'Hardware':
+		return  HardwareReport.objects.all()
+	elif report_name == 'Software':
+		return  SoftwareReport.objects.all()
+	elif report_name == 'SWAN':
+		return  SWANReport.objects.all()
+	elif report_name == 'NOFN':
+		return  NOFNReport.objects.all()
+	elif report_name == 'DigitalLiteracy':
+		return  DLReport.objects.all()
+	elif report_name == 'G2CServices':
+		return  g2cServiceReport.objects.all()
+	elif report_name == 'eDistrictTrans':
+		return  ServiceTransReport.objects.all()
+
 def _updateSnapshotData(user,report_name,YYYYMM,district):
 	queryset = _getSpecficModelQuerySet(report_name)
 	district_full_name = district_dict[district]
 
 	filtered_result = _getFilteredResult(queryset,district,YYYYMM)
-	context = {'filtered_result': filtered_result,'report_name': report_name,'district_full_name': district_full_name,'YYYYMM':YYYYMM,'include_href':1}
+	context = {'filtered_result': filtered_result,\
+	'report_name': report_name,'district': district,'YYYYMM':YYYYMM,'include_href':1,\
+	'district_full_name':district_full_name,'override' : 1 }
 	templ_name = _getTemplateFile(report_name)
 	content = render_to_string(templ_name, context)
 	print(content)
@@ -312,21 +545,41 @@ def _updateSnapshotData(user,report_name,YYYYMM,district):
 	obj = ReportSnapShot.objects.filter(district=district,report_type=report_name,owner=user)
 	if obj.exists():
 		print("Updating Existing Snapshot")
+		obj.content = b''
 		obj.update(content=bin_content)
 	else:
 		Snapshot = ReportSnapShot(content=bin_content,owner=user,report_type=report_name,district=district,state='submitted',YYYYMM=YYYYMM)
-		try:
-			Snapshot.save()
+		#try:
+		Snapshot.save()
 
-		except IntegrityError:
-
-			print("WARNING: Data already exists!")
-
+		#except IntegrityError:
+		#	msg = "Data Aleady Exists for this " + report_name + " reportss!"
+			#messages.warning(msg)
+		#	print(msg)
+	return filtered_result		
 def _getTemplateFile(report_name):
 	TEMPL_DIR = os.path.abspath(os.path.join(settings.PROJECT_DIR,'../reviewer/templates/reviewer'))
 	templ_name = ''
 	if report_name == 'Manpower':
 		templ_name = TEMPL_DIR + '/mp.html'
+	elif report_name == 'CSC':
+		templ_name = TEMPL_DIR + '/csc.html'
+	elif report_name == 'SWAN':
+		templ_name = TEMPL_DIR + '/swan.html'
+	elif report_name == 'NOFN':
+		templ_name = TEMPL_DIR + '/nofn.html'
+	elif report_name == '':
+		templ_name = TEMPL_DIR + '/swan.html'
+	elif report_name == 'Hardware':
+		templ_name = TEMPL_DIR + '/hardware.html'
+	elif report_name == 'Software':
+		templ_name = TEMPL_DIR + '/software.html'
+	elif report_name == 'DigitalLiteracy':
+		templ_name = TEMPL_DIR + '/digital_literacy.html'
+	elif report_name == 'eDistrictTrans':
+		templ_name = TEMPL_DIR + '/edistrict_transaction.html'
+	elif report_name == 'G2CServices':
+		templ_name = TEMPL_DIR + '/g2c_service.html'
 
 	return templ_name
 
