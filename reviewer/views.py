@@ -25,11 +25,25 @@ from mysite.custom_config import *
 dict_q = {}
 report_templates = { 'Manpower' : 'reviewer/mp.html',
 					 'CSC' : 'reviewer/csc.html',
+					 'Software' : 'reviewer/software.html',
+					 'Hardware' : 'reviewer/hardware.html',
+					 'NOFN' : 'reviewer/nofn.html',
+					 'SWAN' : 'reviewer/swan.html',
+					 'DigitalLiteracy' : 'reviewer/digital_literacy.html',
+					 'eDistrictTrans' : 'reviewer/edistrict_transactioin.html',
+					 'G2CServices' : 'reviewer/g2c_service.html'
 					}
 pdf_templates = {
 					'Manpower' : 'reviewer/manpower_pdf.html',
-					'CSC' : 'reviewer/csc_pdf.html'
-
+					'CSC' : 'reviewer/csc_pdf.html',
+					 'Software' : 'reviewer/software_pdf.html',
+					 'Hardware' : 'reviewer/hardware_pdf.html',
+					 'NOFN' : 'reviewer/nofn_pdf.html',
+					 'SWAN' : 'reviewer/swan_pdf.html',
+					 'DigitalLiteracy' : 'reviewer/digital_literacy_pdf.html',
+					 'eDistrictTrans' : 'reviewer/edistrict_transactioin_pdf.html',
+					 'G2CServices' : 'reviewer/g2c_service_pdf.html'
+	
 }
 snapshots = {}
 @login_required
@@ -192,6 +206,14 @@ def populateSnapshot(request):
 """""
 Private Routines
 """
+def _massage_snapshot(content):
+	
+	s1 = snapshot.replace("[<ReportSnapShot:","")
+	#s = s1.replace("</html> >]","</html>")
+	s = re.sub(r"^>\]","",s1)
+	print(s)
+
+
 
 
 def _getSpecficModelQuerySet(report_name):
