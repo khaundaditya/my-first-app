@@ -16,7 +16,7 @@ class g2cServiceReport(models.Model):
 	from_when = models.CharField(max_length=20)
 	mode_of_storage = models.CharField(max_length=10,choices=STORAGE_MODE)
 	remarks = models.CharField(max_length=100)
-	district = models.CharField(max_length=30, blank=False,choices=DISTRICT_CHOICES)
+	district = models.CharField(max_length=30, blank=True,choices=DISTRICT_CHOICES)
 	updated_date = models.CharField(max_length=10)
 	user_name = models.CharField(max_length=20,default='')
 	class Meta:
@@ -35,7 +35,7 @@ class ServiceTransReport(models.Model):
 	service_charge = models.FloatField()
 	statutory_charge = models.FloatField()
 	total_revenue = models.FloatField()
-	district = models.CharField(max_length=30, blank=False,choices=DISTRICT_CHOICES)
+	district = models.CharField(max_length=30, blank=True,choices=DISTRICT_CHOICES)
 	updated_date = models.CharField(max_length=10)
 	user_name = models.CharField(max_length=20,default='')
 	class Meta:
@@ -61,7 +61,7 @@ class HardwareReport(models.Model):
 	hw_in_stock = models.CharField(max_length=60)
 	is_amc_avaialable = models.CharField(max_length=60)
 	remarks = models.CharField(max_length=100)
-	district = models.CharField(max_length=30, blank=False,choices=DISTRICT_CHOICES)
+	district = models.CharField(max_length=30, blank=True,choices=DISTRICT_CHOICES)
 	updated_date = models.CharField(max_length=10)
 	user_name = models.CharField(max_length=20,default='')
 	class Meta:
@@ -88,7 +88,7 @@ class SoftwareReport(models.Model):
 	appl_platform_details = models.CharField(max_length=60)
 	future_roadmap =  models.CharField(max_length=100)
 	support_requirements = models.CharField(max_length=100)
-	district = models.CharField(max_length=30, blank=False,choices=DISTRICT_CHOICES)
+	district = models.CharField(max_length=30, blank=True,choices=DISTRICT_CHOICES)
 	updated_date = models.CharField(max_length=10)
 	user_name = models.CharField(max_length=20,default='')
 	class Meta:
@@ -162,7 +162,7 @@ class SWANReport(models.Model):
 	pop_manpower = models.CharField(max_length=50, blank=True, null=True)
 	reasons_for_not_working = models.CharField(max_length=50, blank=True, null=True,default='NA')
 	remarks = models.CharField(max_length=100, blank=True, null=True)
-	district = models.CharField(max_length=30, blank=False,choices=DISTRICT_CHOICES)
+	district = models.CharField(max_length=30, blank=True,choices=DISTRICT_CHOICES)
 	updated_date = models.CharField(max_length=10)
 	user_name = models.CharField(max_length=20,default='')
 	class Meta:
@@ -185,7 +185,7 @@ class DLReport(models.Model):
 	num_beneficiaries_trained =  models.IntegerField()
 	num_beneficiaries_appeared_in_exam =  models.IntegerField()
 	num_beneficiaries_passed_in_exam =  models.IntegerField()
-	district = models.CharField(max_length=30, blank=False,choices=DISTRICT_CHOICES)
+	district = models.CharField(max_length=30, blank=True,choices=DISTRICT_CHOICES)
 	updated_date = models.CharField(max_length=10)
 	user_name = models.CharField(max_length=20,default='')
 	class Meta:
@@ -210,7 +210,7 @@ class NOFNReport(models.Model):
 	nofn_pop_build_at =  models.CharField(max_length=4, choices=NOFN_CHOICE)
 	is_network_access_available_at_village = models.BooleanField(default=True)
 	remarks = models.CharField(max_length=100, blank=True, null=True)
-	district = models.CharField(max_length=30, blank=False,choices=DISTRICT_CHOICES)
+	district = models.CharField(max_length=30, blank=True,choices=DISTRICT_CHOICES)
 	updated_date = models.CharField(max_length=10)
 	user_name = models.CharField(max_length=20,default='')
 	class Meta:
