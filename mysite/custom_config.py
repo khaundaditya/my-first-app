@@ -143,7 +143,7 @@ WORKFLOW_MODE = (
 STORAGE_MODE = (
 
 	 ('Local', 'Local'),
-     ('Centralized', 'Centralized'),
+     ('Central', 'Central'),
      
 
 )
