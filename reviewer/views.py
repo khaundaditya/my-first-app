@@ -221,6 +221,20 @@ def _getSpecficModelQuerySet(report_name):
 		return  ManpowerReport.objects.all()
 	elif report_name == 'CSC':
 		return  CSCReport.objects.all()
+	elif report_name == 'SWAN':
+		return SWANReport.objects.all()
+	elif report_name == 'NOFN':
+		return SWANReport.objects.all()
+	elif report_name == 'Hardware':
+		return HardwareReport.objects.all()
+	elif report_name == 'Software':
+		return SoftwareReport.objects.all()
+	elif report_name == 'DigitalLiteracy':
+		return DLReport.objects.all()
+	elif report_name == 'eDistrictTrans':
+		return ServiceTransReport.objects.all()
+	elif report_name == 'G2CServices':
+		return g2cServiceReport.objects.all()
 
 def _convertStringToByte(s):
 	lst = []
