@@ -540,7 +540,7 @@ def _updateSnapshotData(user,report_name,YYYYMM,district):
 	'district_full_name':district_full_name,'override' : 1 }
 	templ_name = _getTemplateFile(report_name)
 	content = render_to_string(templ_name, context)
-	print(content)
+#	print(content)
 	bin_content = _convertStringToByte(content)
 	obj = ReportSnapShot.objects.filter(district=district,report_type=report_name,owner=user)
 	if obj.exists():
