@@ -98,7 +98,8 @@ OTHER_APPLICATIONS = (
         ('eSetu','eSetu'),
         ('CCTNS','CCTNS'),
         ('Vahan','Vahan'),
-        ('eDistrict','eDistrict')
+        ('eDistrict','eDistrict'),
+		('NA','NA')
     )
 CONNECTIVITY_MODES = (
         ('B', 'Broadband'),
