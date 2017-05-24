@@ -99,7 +99,8 @@ OTHER_APPLICATIONS = (
         ('CCTNS','CCTNS'),
         ('Vahan','Vahan'),
         ('eDistrict','eDistrict'),
-		('NA','NA')
+		('NA','NA'),
+		('Sarathi','Sarathi')
     )
 CONNECTIVITY_MODES = (
         ('B', 'Broadband'),
