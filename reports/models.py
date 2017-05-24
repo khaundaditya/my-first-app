@@ -5,13 +5,13 @@ from django.core.validators import RegexValidator
 
 # Create your models here.
 class g2cServiceReport(models.Model):
-	service_nm = models.CharField(max_length=60,choices=EDIST_SERVICE_NAMES)
+	service_nm = models.CharField(max_length=150,choices=EDIST_SERVICE_NAMES)
 	associated_line_department = models.CharField(max_length=20)
 	delivery_channel = models.CharField(max_length=10,choices=DELIVERY_MODE)
 	name_of_application = models.CharField(max_length=10,choices=OTHER_APPLICATIONS)
 	is_digitally_signed = models.BooleanField(default=True)
 	is_computerized = models.CharField(max_length=10,choices=WORKFLOW_MODE)
-	language_of_submission = models.CharField(max_length=10,choices=LANGUAGE_CHOICES)
+	language_of_submission = models.CharField(max_length=40)
 	is_legacy_data_digitized = models.BooleanField(default=True)
 	from_when = models.CharField(max_length=20)
 	mode_of_storage = models.CharField(max_length=10,choices=STORAGE_MODE)
@@ -29,7 +29,7 @@ class g2cServiceReport(models.Model):
 		 														self.updated_date,self.user_name)
 class ServiceTransReport(models.Model):
 	
-	service_nm = models.CharField(max_length=60,choices=EDIST_SERVICE_NAMES)
+	service_nm = models.CharField(max_length=150,choices=EDIST_SERVICE_NAMES)
 	associated_line_department = models.CharField(max_length=20)
 	total_transactions = models.IntegerField()
 	service_charge = models.FloatField()
